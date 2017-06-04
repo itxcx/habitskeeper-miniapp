@@ -1,0 +1,30 @@
+.body-wrap{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo{
+  width: 280rpx;
+  height: 280rpx;
+  margin: 0rpx auto;
+  margin-top: 60rpx;
+  margin-bottom: 20rpx;
+}
+
+.player-name{
+  margin: 0rpx auto;
+  margin-bottom: 60rpx;
+}
+
+.item{
+  height: 130rpx;
+  width: 560rpx;
+  margin: 32rpx auto;
+  line-height: 130rpx;
+  text-align: center;
+  background-color: white;
+  border: solid #e0e0e0 1rpx;
+  border-radius: 8rpx;
+  font-size: 36rpx;
+}
