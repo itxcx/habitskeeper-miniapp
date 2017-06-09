@@ -1,0 +1,133 @@
+/* pages/others/calendar/calendar.wxss */
+page{
+  background-color: white;
+}
+.selected_date {
+  width: 37%;
+  padding: 32rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+
+.selected_date>view {
+  font-size: 40rpx;
+  color: white;
+  margin: auto 0;
+}
+
+.selected_target{
+  width: 63%;
+  margin: auto 0;
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  font-size: 30rpx;
+}
+
+.selected_value_per{
+  font-size: 56rpx;
+  text-align: right;
+}
+
+.calendar_panel {
+  width: 100%;
+}
+
+.calendar_box {
+  width: 100%;
+  background: #fff;
+  overflow: hidden;
+
+}
+
+.weekday_label {
+  width: 14.28%;
+  height: 100rpx;
+  float: left;
+  display: block;
+  text-align: center;
+  font-size: 26rpx;
+  padding: 10rpx 0;
+}
+
+.select_icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin: auto 0;
+}
+
+.active_date {
+  font-size: 50rpx;
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  display: inline-block;
+  color: cornflowerblue;
+  border: solid #e0e0e0 3rpx;
+  border-radius: 50%;
+}
+
+.date {
+  font-size: 40rpx;
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  display: inline-block;
+  border: solid #e0e0e0 3rpx;
+  border-radius: 50%;
+}
+
+.show_box {
+  padding: 32rpx;
+  font-size: 28rpx;
+  color: blue;
+}
+
+.calendar_box:nth-child(2) .weekday_label{
+  float: right;
+}
+
+.prop-box{
+  height: 50rpx;
+  padding: 20rpx 32rpx;
+  display: flex;
+  flex-direction: row;
+  border-bottom: solid #f0f0f0 1rpx;
+  background-color: white;
+}
+
+.prop-name{
+  height: 50rpx;
+  width: 30%;
+  text-align: left;
+  line-height: 50rpx;
+  font-size: 30rpx;
+}
+
+.prop-value{
+  height: 50rpx;
+  width: 70%;
+  text-align: right;
+  line-height: 50rpx;
+  font-size: 28rpx;
+  color: gray;
+}
+
+.complete-rate-box{
+  width: 100%;
+  margin-top: 100rpx;
+  display: flex;
+  flex-direction: column;
+}
+.complete-rate{
+  width: 180rpx;
+  height: 180rpx;
+  line-height: 180rpx;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 60rpx;
+  border: solid #e0e0e0 3rpx;
+  border-radius: 50%;
+}

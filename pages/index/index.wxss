@@ -1,30 +1,176 @@
-.body-wrap{
+.mask{
+  position: absolute;
+  width: 100%;
   height: 100%;
+  background-color: white;
+  opacity:0.4;
+}
+.wrap{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  background-color: #333333;
+}
+.date{
+  width: 60%;
+  height: 160rpx;
+  line-height: 160rpx;
+  font-size: 50rpx;
+  padding-left: 32rpx;
+}
+.week{
+  width: 40%;
+  height: 160rpx;
+  line-height: 160rpx;
+  font-size: 50rpx;
+  padding-right: 32rpx;
+  text-align: right;
+}
+
+.habit-box{
+  height: 220rpx;
+  display: flex;
+  background-color: white;
+  border-bottom: solid 1rpx #f0f0f0;
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+}
+
+.habit-name{
+  margin: auto 0;
+  width: 60%;
+}
+
+.ctl-select{
+  position: absolute;
+  right: 42rpx;
+  bottom: 80rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #efb336;
+  border-radius: 100%;
+  padding: 40rpx;
+  box-shadow: 5rpx 5rpx 3rpx #e0e0e0;
+}
+
+.ctl-item{
+  height: 74rpx;
+  position: absolute;
+  right: 58rpx;
+  bottom: 240rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.ctl-name{
+  width: 100rpx;
+  height: 60rpx;
+  text-align: center;
+  line-height: 60rpx;
+  margin:auto 0 ;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+  background-color: white;
+  border-radius: 10rpx;
+  box-shadow: 3rpx 3rpx 3rpx 3rpx #e0e0e0;
+}
+
+.ctl-icon{
+  width: 38rpx;
+  height: 38rpx;
+  border-radius: 100%;
+  background-color: white;
+  padding: 20rpx;
+  box-shadow: 3rpx 3rpx 3rpx 3rpx #e0e0e0;
+}
+
+.yesno{
+  width: 42rpx;
+  height: 42rpx;
+  margin-left: 52rpx;
+  border-radius: 100%;
+  box-shadow: 3rpx 3rpx 3rpx 3rpx #e0e0e0;
+}
+
+.habit-right{
+  width: 40%;
   display: flex;
   flex-direction: column;
 }
 
-.logo{
-  width: 280rpx;
-  height: 280rpx;
-  margin: 0rpx auto;
-  margin-top: 60rpx;
-  margin-bottom: 20rpx;
+.habit-right-title{
+  width: 100%;
+  text-align: right;
+  font-size: 28rpx;
+  color: gray;
+  padding: 10rpx 0;
 }
 
-.player-name{
-  margin: 0rpx auto;
-  margin-bottom: 60rpx;
+.habit-right-value{
+  width: 100%;
+  text-align: right;
+  font-size: 50rpx;
+  padding: 10rpx 0;
 }
 
-.item{
-  height: 130rpx;
-  width: 560rpx;
-  margin: 32rpx auto;
-  line-height: 130rpx;
-  text-align: center;
-  background-color: white;
-  border: solid #e0e0e0 1rpx;
-  border-radius: 8rpx;
-  font-size: 36rpx;
+
+/*mask*/
+.drawer_screen { 
+width: 100%; 
+height: 100%; 
+ position: fixed; 
+ top: 0; 
+ left: 0; 
+ z-index: 1000; 
+ background: #000; 
+ opacity: 0.5; 
+ overflow: hidden; 
+} 
+  
+/*content*/
+.drawer_box { 
+ width: 650rpx; 
+ overflow: hidden; 
+ position: fixed; 
+ top: 50%; 
+ left: 0; 
+ z-index: 1001; 
+ background: #FAFAFA; 
+ margin: -220rpx 50rpx 0 50rpx; 
+ border-radius: 10rpx; 
+}
+
+.btn_ok{ 
+ padding: 20rpx; 
+ font: 36rpx "microsoft yahei"; 
+ text-align: center; 
+ border-top: 1px solid #E8E8EA; 
+ color: #3CC51F; 
+} 
+
+.input_base { 
+ border: 2rpx solid #ccc; 
+ padding-left: 20rpx; 
+ margin-right: 20rpx;
+ margin-left: 20rpx;
+ margin-top: 45rpx;
+ height: 70rpx; 
+ line-height: 70rpx; 
+ font: 32rpx "microsoft yahei"; 
+ background: #fff; 
+ color:#000 ; 
+}
+
+.habit-no{
+  font-size: 28rpx;
+  text-align: right;
+  color: red;
+}
+
+.habit-yes{
+  font-size: 28rpx;
+    text-align: right;
+  color: green;
 }

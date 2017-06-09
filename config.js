@@ -4,10 +4,10 @@
 
 var host = "www.ywwxmm.cn"
 
-var baseUrl = `https://${host}/sryx/`;
-var wssUrl = `wss://${host}/sryx/`;
-var appId = "wxef380dec4a685674";
-var appSecret = "5154d327dc5cb33438b3e04bf86aa013";
+var baseUrl = `https://${host}/habitskeeper/`;
+var wssUrl = `wss://${host}/habitskeeper/`;
+var appId = "wx2d2a190ce3339c8e";
+var appSecret = "af3a1dc7803f7c97e62b14dff23b17ce";
 
 module.exports = {
   baseUrl: baseUrl,

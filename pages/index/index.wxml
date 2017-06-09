@@ -1,0 +1,50 @@
+<view class="mask" wx:if="{{showMask}}">
+</view>
+<view class="wrap">
+  <view class="date">{{currDate}}</view>
+  <view class="week">{{currWeek}}</view>
+</view>
+
+<block wx:for-items="{{habitList}}">
+  <view class="habit-box">
+    <view id="goto-{{item.habitId}}" class="habit-name" bindtap="habitDetailTap">{{item.habitName}}</view>
+    <view class="habit-right">
+      <view class="habit-right-title">本月完成率</view>
+      <view class="habit-right-value">{{item.curMonthPercent*100}}%</view>
+      <view class="flx-row" style="justify-content:flex-end" wx:if="{{item.lastEditDate!=currDateForCompare}}">
+        <image id="no-{{item.habitId}}" class="yesno" src="/image/no.png" bindtap="noTap"></image>
+        <image id="yes-{{item.habitId}}" class="yesno" src="/image/yes.png" bindtap="yesTap"></image>
+      </view>
+      <view class="habit-no" wx:elif="{{item.lastCompleteState==0}}">今天没有完成目标</view>
+      <view class="habit-yes" wx:elif="{{item.lastCompleteState==1}}">今天已经完成目标</view>
+    </view>
+  </view>
+</block>
+
+<view class="ctl-item" wx:if="{{showMask}}" style="bottom: 470rpx;" bindtap="showAddHabitTap">
+  <view class="ctl-name">新增</view>
+  <image class="ctl-icon" src="/image/ctl-add.png"></image>
+</view>
+
+<view class="ctl-item" wx:if="{{showMask}}" style="bottom: 350rpx;">
+  <view class="ctl-name">分享</view>
+  <image class="ctl-icon" src="/image/ctl-share.png"></image>
+</view>
+
+<view class="ctl-item" wx:if="{{showMask}}">
+  <view class="ctl-name">反馈</view>
+  <image class="ctl-icon" src="/image/ctl-feedback.png"></image>
+</view>
+
+<image class="ctl-select" src="{{showMask?'/image/control-selected.png':'/image/control-normal.png'}}" bindtap="controlTap">
+</image>
+
+
+<!--mask-->
+<view class="drawer_screen" bindtap="cancleAddHabitTap" data-statu="close" wx:if="{{showModalStatus}}"></view> 
+<!--content-->
+<!--使用animation属性指定需要执行的动画-->
+<view class="drawer_box" wx:if="{{showModalStatus}}"> 
+ <input class="input_base" placeholder="请输入目标内容,例：过午不食" bindinput="habitNameInput"></input> 
+ <view class="btn_ok" bindtap="confirmAddHabitTap" data-statu="close">确定</view> 
+</view>

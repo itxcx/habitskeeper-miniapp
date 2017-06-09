@@ -1,13 +1,29 @@
 var config = require('../../config');
+var dateUtil = require('../../utils/dateUtil.js');
 var self;
 
 Page({
+  currDateForCompare:'',
+  currDate:'',
+  currWeek:'',
+
   data: {
-    userInfo:{}
+    habitNameInput:'',
+    showModalStatus: false,
+    userInfo:{},
+    showMask: false,
+    habitList:[
+    ]
   },
 
   onLoad: function (){
     self = this;
+    self.setData({
+      currDate: dateUtil.getCurrentDateDisplay(),
+      currWeek: dateUtil.getCurrentWeekDisplay(),
+      currDateForCompare: dateUtil.getCurrentDate()
+    })
+
     wx.login({
       success: function (data) {
         console.log('step1 success 调用微信登录接口');
@@ -33,7 +49,7 @@ Page({
                   userInfo: self.data.userInfo
                 })
                 wx.hideLoading();
-                self.getUserById();
+                self.updateUser();
               },
 
               fail: function (res) {
@@ -76,36 +92,15 @@ Page({
 
   onShow: function () {
     if(null != getApp().user.player){
-      self.getPlayerById();
+      self.getUserById();
     }
-  },
-
-  getUserById: function(){
-    wx.request({
-      url: config.baseUrl + "getplayerbyid",
-      data: {
-        playerId: getApp().user.openid,
-      },
-      success: function (result) {
-        var player = result.data.result;
-        getApp().user.player = player;
-        if(result.data.returnCode == "200"){
-          
-        }else{
-          self.updatePlayer();
-        }
-      },
-
-      fail: function ({errMsg}) {
-      }
-    })
   },
 
   updateUser: function(){
     wx.request({
-      url: config.baseUrl + "updateplayer",
+      url: config.baseUrl + "adduser",
       data: {
-        playerId: getApp().user.openid,
+        userId: getApp().user.openid,
         avatarUrl: getApp().user.userInfo.avatarUrl,
         city: getApp().user.userInfo.city,
         country: getApp().user.userInfo.country,
@@ -117,11 +112,147 @@ Page({
       success: function (result) {
         console.log('step4 success 更新云端用户信息 ', result.data);
         console.log(result.data);
+        self.getHabitList();
       },
 
       fail: function ({errMsg}) {
         console.log('step4 fail 更新云端用户信息 ', errMsg);
       }
     })
-  }
+  },
+
+  getHabitList: function(){
+    wx.request({
+      url: config.baseUrl + "gethabitlist",
+      data: {
+        userId: getApp().user.openid,
+      },
+      success: function (result) {
+        if(result.data.returnCode == '200'){
+          self.setData({
+            habitList: result.data.result
+          })
+        }else{
+
+        }
+      },
+
+      fail: function ({errMsg}) {
+      }
+    })
+  },
+
+  habitNameInput: function(e) {
+    self.data.habitNameInput = e.detail.value;
+  },
+
+  controlTap: function() {
+    self.setData({
+      showMask: !self.data.showMask
+    })
+  },
+
+  noTap:function(e){
+    var id = e.currentTarget.id, list = self.data.habitList;
+    for (var i = 0; i < list.length; i++) {
+      if ("no-" + list[i].habitId == id) {
+        var habitId = list[i].habitId;
+        wx.showModal({
+          title: "提示",
+          content: "您确定吗？您今天没有完成了该目标。",
+          confirmText: "确定",
+          cancelText: "取消",
+          success: function () {
+            self.addHabitDayRecord(habitId, dateUtil.getCurrentDate(), 0);
+          }
+        })
+      }
+    }
+  },
+
+  yesTap:function(e){
+    var id = e.currentTarget.id, list = self.data.habitList;
+    for (var i = 0; i < list.length; i++) {
+      if ("yes-" + list[i].habitId == id) {
+        var habitId = list[i].habitId;
+        wx.showModal({
+          title: "提示",
+          content: "您确定吗？您今天已经完成了该目标。",
+          confirmText: "确定",
+          cancelText: "取消",
+          success: function () {
+            self.addHabitDayRecord(habitId, dateUtil.getCurrentDate(), 1);
+          }
+        })
+      }
+    }
+  },
+
+  addHabitDayRecord: function (habitId, date, isComplete){
+    wx.showToast({
+      title: '正在上传数据...',
+      icon: 'loading'
+    })
+    wx.request({
+      url: config.baseUrl + "addhabitdayrecord",
+      data: {
+        habitId: habitId,
+        date: date,
+        isComplete: isComplete,
+        remark: '无',
+      },
+      success: function (result) {
+        wx.hideToast();
+        self.getHabitList();
+      },
+
+      fail: function ({errMsg}) { }
+    })
+  },
+
+  habitDetailTap:function(e){
+    var id = e.currentTarget.id, list = self.data.habitList;
+    for (var i = 0; i < list.length; i++) {
+      if ("goto-" + list[i].habitId == id) {
+        wx.navigateTo({
+          url: '/pages/habitDetail/habitDetail?habitId=' + list[i].habitId,
+        })
+      }
+    }
+  },
+
+  showAddHabitTap: function (e) {
+      self.setData({
+        showMask: false,
+        showModalStatus: true
+      })
+   }, 
+
+   cancleAddHabitTap: function(){
+     this.setData({
+       showModalStatus: false
+     });
+   },
+
+   confirmAddHabitTap: function (currentStatu) {
+     self.cancleAddHabitTap();
+     wx.showToast({
+       title: '正在上传数据...',
+       icon: 'loading'
+     })
+     wx.request({
+       url: config.baseUrl + "addhabit",
+       data: {
+         userId: getApp().user.openid,
+         habitName: self.data.habitNameInput,
+         targetPercent: 0.8,
+       },
+       success: function (result) {
+         wx.hideToast();
+         self.getHabitList();
+       },
+
+       fail: function ({errMsg}) {}
+     })
+   }
 })

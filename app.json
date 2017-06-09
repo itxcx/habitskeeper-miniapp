@@ -1,10 +1,11 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/habitDetail/habitDetail"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarBackgroundColor": "#f8f8f8",
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#333333",
     "backgroundColor": "#f8f8f8",
     "backgroundTextStyle": "light"
   },
