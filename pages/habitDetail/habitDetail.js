@@ -1,9 +1,12 @@
 var config = require('../../config');
 var dateUtil = require('../../utils/dateUtil.js');
 var self;
+var selectedYearMonth;
 Page({
   data: {
     habit:{},
+    curYearMonthDay:'',
+    selectedPercent:0,
     selectedDate: '',//选中的几月几号
     selectedWeek: '',//选中的星期几
     curYear: 2017,//当前年份
@@ -15,17 +18,31 @@ Page({
     dateList: [],
     dayRecordList: []
   },
+
   onLoad: function (options) {
     self = this;
+    selectedYearMonth = dateUtil.getCurrentYearMonth();
     self.getHabitById(options.habitId);
-    self.getDayRecordListInMonth(options.habitId, dateUtil.getCurrentYearMonth());
-  },
-  onReady: function () {
-    // 页面渲染完成
+    self.getDayRecordListInMonth(options.habitId, selectedYearMonth);
+    self.setData({
+      curYearMonthDay: dateUtil.getCurrentDate(),
+    })
   },
 
-  initDateList: function () {
-    var today = new Date();//当前时间  
+  bindYearMonthChange: function(e){
+    selectedYearMonth = e.detail.value;
+    var date = new Date(selectedYearMonth);
+    var y = date.getFullYear();//年  
+    var mon = date.getMonth() + 1;//月  
+    this.setData({
+      curYear: y,
+      curMonth: mon,
+    });
+    self.getDayRecordListInMonth(self.data.habit.habitId, selectedYearMonth);
+  },
+
+  initDateList: function (yearmonth) {
+    var today = new Date(yearmonth);//当前时间  
     var y = today.getFullYear();//年  
     var mon = today.getMonth() + 1;//月  
     var d = today.getDate();//日  
@@ -99,10 +116,55 @@ Page({
   },
 
   selectDate: function (e) {
-    self.setData({
-      selectedDate: e.currentTarget.dataset.date.value,
-      selectedWeek: vm.data.weekArr[e.currentTarget.dataset.date.week]
-    });
+    var item = e.currentTarget.dataset.date;
+    var date = new Date(item.value);
+    if (item.isComplete == null){
+      wx.showModal({
+        title: "提示",
+        content: item.value+",这一天您完成目标了吗？",
+        confirmText: "已完成",
+        cancelText: "未完成",
+        success: function (res) {
+          if (res.confirm) {
+            self.addHabitDayRecord(self.data.habit.habitId, date.format("yyyy-MM-dd"), 1);
+          } else if (res.cancel) {
+            self.addHabitDayRecord(self.data.habit.habitId, date.format("yyyy-MM-dd"), 0);
+          }
+        }
+      })
+    }
+  },
+
+  addHabitDayRecord: function (habitId, date, isComplete) {
+    wx.showToast({
+      title: '正在上传数据...',
+      icon: 'loading'
+    })
+    wx.request({
+      url: config.baseUrl + "addhabitdayrecord",
+      data: {
+        habitId: habitId,
+        date: date,
+        isComplete: isComplete,
+        remark: '无',
+      },
+      success: function (result) {
+        if (result.data.returnCode == '200'){
+          self.getHabitById(habitId);
+          self.getDayRecordListInMonth(habitId, selectedYearMonth);
+        }else{
+          wx.showModal({
+            title: "提示",
+            content: result.data.returnMsg,
+            confirmText: "确定",
+            showCancel: false
+          })
+        }
+        wx.hideToast();
+      },
+
+      fail: function ({errMsg}) { }
+    })
   },
 
   preMonth: function () {
@@ -145,6 +207,12 @@ Page({
             habit: result.data.result
           })
         } else {
+          wx.showModal({
+            title: "提示",
+            content: result.data.returnMsg,
+            confirmText: "确定",
+            showCancel: false
+          })
         }
       },
 
@@ -163,9 +231,15 @@ Page({
       success: function (result) {
         if (result.data.returnCode == '200') {
           self.data.dayRecordList=result.data.result;
-          self.initDateList();
-        } else {
+          self.setData({
+            selectedPercent: result.data.returnMsg
+          })
+        }else{
+          self.setData({
+            selectedPercent: 0
+          })
         }
+        self.initDateList(yearmonth);
       },
 
       fail: function ({errMsg}) {

@@ -91,8 +91,8 @@ Page({
   },
 
   onShow: function () {
-    if(null != getApp().user.player){
-      self.getUserById();
+    if(null != getApp().user.userInfo){
+      self.getHabitList();
     }
   },
 
@@ -236,23 +236,35 @@ Page({
 
    confirmAddHabitTap: function (currentStatu) {
      self.cancleAddHabitTap();
-     wx.showToast({
-       title: '正在上传数据...',
-       icon: 'loading'
-     })
-     wx.request({
-       url: config.baseUrl + "addhabit",
-       data: {
-         userId: getApp().user.openid,
-         habitName: self.data.habitNameInput,
-         targetPercent: 0.8,
-       },
-       success: function (result) {
-         wx.hideToast();
-         self.getHabitList();
-       },
+     if (self.data.habitNameInput != null && self.data.habitNameInput.length != 0){
+       wx.showToast({
+         title: '正在上传数据...',
+         icon: 'loading'
+       })
+       wx.request({
+         url: config.baseUrl + "addhabit",
+         data: {
+           userId: getApp().user.openid,
+           habitName: self.data.habitNameInput,
+           targetPercent: 0.8,
+         },
+         success: function (result) {
+           wx.hideToast();
+           self.getHabitList();
+         },
 
-       fail: function ({errMsg}) {}
-     })
+         fail: function ({errMsg}) { }
+       })
+     }else{
+       wx.showModal({
+         title: "提示",
+         content: "请您输入内容！",
+         confirmText: "确定",
+         showCancel: false,
+         success: function () {
+           self.addHabitDayRecord(habitId, dateUtil.getCurrentDate(), 1);
+         }
+       })
+     }
    }
 })

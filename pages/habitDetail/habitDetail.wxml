@@ -1,9 +1,11 @@
 <view class="flx-row" style="height:150rpx; background-color: #333333;">
   <view class="selected_target">目标：{{habit.habitName}}</view>
-  <view class="selected_date">
-    <view style="text-align:center">{{curYear+'年'+curMonth+'月'}}</view>
-    <image class="select_icon" src="/image/down.png"></image>
-  </view>
+  <picker style="width: 45%;margin: auto 0;" mode="date" fields="month" value="{{date}}" start="{{habit.startDate}}" end="{{curYearMonthDay}}" bindchange="bindYearMonthChange">
+    <view class="selected_date">
+      <view style="text-align:center">{{curYear+'年'+curMonth+'月'}}</view>
+      <image class="select_icon" src="/image/down.png"></image>
+    </view>
+  </picker>
 </view>
 
 <view class="calendar_panel">
@@ -18,12 +20,12 @@
   </view>
   <view class="calendar_box"  wx:for="{{dateList}}" wx:for-item="week">
     <view class="weekday_label" wx:for="{{week}}">
-      <view wx:if="{{item.isComplete==null}}" class="{{item.value==selectedDate?'active_date':'date'}}" bindtap="selectDate" data-date="{{item}}">{{item.day}}</view>
-      <view wx:elif="{{item.isComplete==0}}" class="{{item.value==selectedDate?'active_date':'date'}}" style="border: solid red 5rpx;border-radius: 50%;" bindtap="selectDate" data-date="{{item}}">{{item.day}}</view>
-      <view wx:elif="{{item.isComplete==1}}" class="{{item.value==selectedDate?'active_date':'date'}}" style="border: solid green 5rpx;border-radius: 50%;" bindtap="selectDate" data-date="{{item}}">{{item.day}}</view>
+      <view wx:if="{{item.isComplete==null}}" class="date" bindtap="selectDate" data-date="{{item}}">{{item.day}}</view>
+      <view wx:elif="{{item.isComplete==0}}" class="date" style="border: solid red 5rpx;border-radius: 50%;" bindtap="selectDate" data-date="{{item}}">{{item.day}}</view>
+      <view wx:elif="{{item.isComplete==1}}" class="date" style="border: solid green 5rpx;border-radius: 50%;" bindtap="selectDate" data-date="{{item}}">{{item.day}}</view>
     </view>
   </view>
 </view>
 <view class="complete-rate-box">
-  <view class="complete-rate">{{habit.curMonthPercent*100}}%</view>
+  <view class="complete-rate">{{selectedPercent}}%</view>
 </view>

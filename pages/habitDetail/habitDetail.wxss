@@ -3,7 +3,6 @@ page{
   background-color: white;
 }
 .selected_date {
-  width: 37%;
   padding: 32rpx;
   overflow: hidden;
   display: flex;
@@ -17,7 +16,7 @@ page{
 }
 
 .selected_target{
-  width: 63%;
+  width: 55%;
   margin: auto 0;
   padding: 32rpx;
   display: flex;
@@ -117,7 +116,7 @@ page{
 
 .complete-rate-box{
   width: 100%;
-  margin-top: 100rpx;
+  margin-top: 80rpx;
   display: flex;
   flex-direction: column;
 }
